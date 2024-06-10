@@ -6,22 +6,18 @@
 # Name working directory 
 setwd("~/Documents/Worms/VariantCalling/Stats")
 # Name of the grepped file
-file <- "output_AllLines.bF_PSC.vchk" 
+file <- "output_AllLines.aF_PSC.vchk" 
 # Name of output
-name <- "AllLines.bF.sampleRemoved"
+name <- "AllLines.aF"
 # Cutoff : extract lines with values >
 T_singletons <- 150
-T_het <- 0.085
+T_het <- 0.035
 
 library(ggplot2)
 library("ggsci")
 
 # Convert file in dataframe format
 df <- read.delim(file,header = FALSE,)
-to_removed <- read.csv('/Users/alix/Documents/Worms/VariantCalling/Isotypes/Removed_line.csv')
-
-df <- df[!(df$V3 %in% to_removed$Line),]
-
 # Set columns name
 colnames(df) <- c("PSC","id","sample","nRefHom","nNonRefHom","nHets","nTransitions","nTransversions",	"nIndels","average_depth","nSingleton","nHapRef","nHapAlt","nMissing")
 # Keep only columns we are intersseted in
@@ -121,7 +117,6 @@ Lines_het <- na.omit(Lines_het)
 Lines_singletons <- Lines_singletons[order(Lines_singletons)]
 Lines_het <- Lines_het[order(Lines_het)]
 
-write.csv(data.frame(Line=Lines_het,Issue=rep('High_heterozygotity',length(Lines_het))),'Removed_line_hetero.csv',row.names = FALSE,quote = FALSE)
 
 #Get lines with none SNPs 
 Lines_none <- Df[Df$nSNP==0,]

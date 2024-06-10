@@ -81,10 +81,6 @@ to_keep <- rownames(nbr_na[nbr_na$NA_values<0.982,, drop = FALSE]) #drop prevent
 
 for(i in rownames(nbr_na[nbr_na$NA_values>=0.982,, drop = FALSE])){ if(i %in% paste0(doublons$x,'CeMee')){print(i)}}
 
-write.csv(data.frame(Line=rownames(nbr_na[nbr_na$NA_values>=0.982,, drop = FALSE]),Issue=rep('NA',length(rownames(nbr_na[nbr_na$NA_values>=0.982,, drop = FALSE])))),
-        'Removed_line_NA.csv',
-        quote = FALSE,
-        row.names = FALSE)
 reduced_convert_genotype <-convert_genotype[,to_keep]
 
 ##### SECOND PART #####

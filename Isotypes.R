@@ -8,7 +8,7 @@ setwd("~/Documents/Worms/VariantCalling/Isotypes/")
 # hard filtering file after imputation
 file <- "I.final.hard_filter.vcf.gz"
 # Matrix of concordance
-matrix_name <- "matrix_concordance.by_hand.0.982.corrected1.tsv"
+matrix_name <- "matrix_concordance.by_hand.0.982.corrected.tsv"
 # Cutoff
 T <- 0.9945
 
@@ -270,40 +270,7 @@ for (i in seq_along(liste_isotypes_groups)) {
 liste_isotypes_groups <- filtered_list
 
 # Write results in .csv
-write.csv(do.call(rbind, lapply(liste_isotypes_groups, function(x) paste(x, collapse = ","))), "isotype_groups.0.982.csv", quote = FALSE)
+write.csv(do.call(rbind, lapply(liste_isotypes_groups, function(x) paste(x, collapse = ","))), "isotype_groups.0.982.csv", row.names = FALSE, quote = FALSE)
 
-nbr_group <- 1
-Df_isotype <- data.frame(Line=character(0),
-                         Isotype_group_number=integer(0),
-                         Representant_line=character(0))
-pop_isotype <- c()
-for(l in liste_isotypes_groups){
-  leader <- l[[which(nbr_na[l,]==min(nbr_na[l,]))]]
-  for(i in l){
-    if(i!=leader){
-      Df_isotype <- data.frame(rbind(Df_isotype,data.frame(Line=i,Isotype_group_number=nbr_group,Representant_line=leader)))
-        if(substr(i,1,2) %in% c("A6","CA","GA","GM","GT","LR")){
-          pop_isotype <- c(pop_isotype,substr(i,1,2))}
-        if (substr(i,1,3)=="SMR"){
-          pop_isotype <- c(pop_isotype,substr(i,1,3))}
-        }
-  }
-  nbr_group <- nbr_group+1
-}
 
-write.csv(table(pop_isotype),'Distribution_isotypes.csv',row.names = FALSE,quote = FALSE)
-write.csv(Df_isotype,'correspondance_isotypes.csv',row.names = FALSE,quote = FALSE)
 
-### Write a file which contains all lines which have been removed and why
-write.csv(data.frame(Line=Df_isotype$Line,Issue=rep('Isotype',length(Df_isotype$Line))),'Removed_line_isotypes.csv',row.names = FALSE,quote = FALSE)
-
-Removed_line <- read_csv("Removed_line.csv")
-
-pop_removed <- c()
-for(i in Removed_line$Line){
-  if(substr(i,1,2) %in% c("A6","CA","GA","GM","GT","LR")){
-    pop_removed <- c(pop_removed ,substr(i,1,2))}
-  if (substr(i,1,3)=="SMR"){
-    pop_removed <- c(pop_removed ,substr(i,1,3))}
-  }
-write.csv(table(pop_removed),'Distribution_removed.csv',row.names = FALSE,quote = FALSE)
