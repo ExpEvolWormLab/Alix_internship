@@ -288,6 +288,6 @@ cols_to_keep <- colnames(matrix)[!(colnames(matrix) %in% pb_isotype)]
 
 new_matrix <- matrix[rows_to_keep, cols_to_keep]
 
-write.table(new_matrix,'matrix_concordance.by_hand.0.982.corrected1.tsv',sep='\t',quote = FALSE)
+write.table(new_matrix,'matrix_concordance.by_hand.corrected1.tsv',sep='\t',quote = FALSE)
 write.csv(data.frame(Line=pb_isotype,Issue=rep('Shared_several_isotype_groups',length(pb_isotype))),'Removed_line_isotype_groups.csv',row.names = FALSE,quote = FALSE)
 
