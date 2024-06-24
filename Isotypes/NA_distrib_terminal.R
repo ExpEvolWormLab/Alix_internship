@@ -1,19 +1,15 @@
 ### Isotypes ###
-# Script to create isotype group (Strain pairs with concordance > 0.99985)
-# First and Second part should be split from others, and just produce the matrix in a .tsv file
+# Script to get NaN distribution, write it in a .tsv
 
 # To change
 # working directory
 setwd("~/Documents/Worms/VariantCalling")
 # hard filtering file after imputation
 file <- "AllLines.hard_filter.vcf.gz"
-# Cutoff
-T <- 0.99985
 
 library(vcfR)
 library(ggplot2)
 
-##### FIRST PART #####
 ### Read vcf file
 ### Convert genotype in number (-1 for Na, 0 or 2)
 
