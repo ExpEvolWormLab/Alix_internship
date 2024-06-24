@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# first feature : path of the file where .bam are stored
+# first feature : path of the folder where .bam are stored
 # second : name of the directory where the results'll be stored  (is going to be created where the script is launch)
 
 path_gatk=$3
