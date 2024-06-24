@@ -1,0 +1,16 @@
+Pipeline to lauch GATK pipeline to call variants usign tools from GATK v.4.5.0.0
+
+1. bash launch_GATK.part1.sh folder output_directory
+launch_GATK.part1.sh :  Pre-processing step (MarkDuplicates, AddOrReplaceReadGroups, BaseRecalibrator, ApplyBQSR)
+			Variant calling step  (HaplotypeCaller)
+folder - folder where .bam file are stored
+ouput_directory - name of the output directory (doesn't have to exist)
+
+2. find -name *reheader.g.vcf.gz > .list | sed "s/\.\//$pwd/g"
+Need to create a .list before running launch_GATK.part2.sh
+.list - contains all the g.vcf.gz we want to combine
+
+3. bash launch_GATK.part2.sh .list output_directory
+
+
+
