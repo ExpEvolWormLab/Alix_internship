@@ -8,9 +8,12 @@ ouput_directory - name of the output directory (doesn't have to exist)
 
 2. find -name *reheader.g.vcf.gz > .list | sed "s/\.\//$pwd/g"
 Need to create a .list before running launch_GATK.part2.sh
-.list - contains all the g.vcf.gz we want to combine
+.list - contains all paths of g.vcf.gz we want to combine
 
 3. bash launch_GATK.part2.sh .list output_directory
-
+launch_GATK.part2.sh :  Genotyping step (CombineGVCFs, GenotypeGVCFs)
+			Filtration step (SelectVariants, VariantFiltration, bcftools : (view, filter))
+.list -  contains all paths of g.vcf.gz we want to combine
+ouput_directory - name of the output directory (doesn't have to exist)
 
 
