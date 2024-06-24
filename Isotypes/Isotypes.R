@@ -275,7 +275,7 @@ for (i in seq_along(liste_isotypes_groups)) {
 liste_isotypes_groups <- filtered_list
 
 # Write results in .csv
-write.csv(do.call(rbind, lapply(liste_isotypes_groups, function(x) paste(x, collapse = ","))), "isotype_groups.0.982.csv", quote = FALSE)
+write.csv(do.call(rbind, lapply(liste_isotypes_groups, function(x) paste(x, collapse = ","))), "isotype_groups.csv", quote = FALSE)
 
 nbr_group <- 1
 Df_isotype <- data.frame(Line=character(0),
