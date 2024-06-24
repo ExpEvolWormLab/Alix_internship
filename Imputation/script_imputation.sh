@@ -11,9 +11,9 @@ do
     if [ ! -e "$2/${pop}_final.vcf.gz" ] # if the file by pop hasn't be compute yet
     then
         # Get the name of line belonging to the pop
-        bcftools query -l "$1" | grep "$pop" > "$2/sample.name"
+        bcftools query -l "$1" | grep "$pop" > "$2/${pop}.sample.name"
         # Extract them from vcf file
-        bcftools view "$1" -S "$2/sample.name" -O z > "$2/${pop}_final.vcf.gz"
+        bcftools view "$1" -S "$2/${pop}.sample.name" -O z > "$2/${pop}_final.vcf.gz"
     fi
     wait
     for chrom in I II III
