@@ -1,51 +1,65 @@
 ### Script to set cutoff for isotypes
 
+# Set the working directory
 setwd("~/Documents/Worms/VariantCalling/Isotypes/")
 
-matrix <- read.csv('matrix_concordance.by_hand.0.982.tsv',sep = '\t')
+# Read the matrix of concordance values from a .tsv file
+matrix <- read.csv('matrix_concordance.by_hand.0.982.tsv', sep = '\t')
+
+# Read the list of duplicate entries from a .csv file
 doublons <- read.csv('Doublons.csv')
 
+# Define the concordance cutoff value
+T <- 0.9945
+
+# Initialize empty vectors to store values and indices
 values <- c()
 indice <- c()
 indice1 <- c()
-for(i in doublons$x){
-  indice <- c(indice,i)
-  indice1 <- c(indice1,paste0(i,'CeMee'))
-  if(! i %in% rownames(matrix) || ! paste0(i,'CeMee') %in% rownames(matrix)){
-    values <- c(values,NaN)
-  }else{values <- c(values,matrix[i,paste0(i,'CeMee')])}
+
+# Loop through each duplicate entry
+for (i in doublons$x) {
+  # Append the current entry to the indices
+  indice <- c(indice, i)
+  indice1 <- c(indice1, paste0(i, 'CeMee'))
+  
+  # Check if the current entry or its 'CeMee' version is not in the matrix
+  if (!i %in% rownames(matrix) || !paste0(i, 'CeMee') %in% rownames(matrix)) {
+    values <- c(values, NaN)
+  } else {
+    values <- c(values, matrix[i, paste0(i, 'CeMee')])
+  }
 }
 
-Df <- data.frame(i=indice,j=indice1,Concordance=values)
+# Create a data frame from the indices and concordance values
+Df <- data.frame(i = indice, j = indice1, Concordance = values)
 
+# Load the ggplot2 library for plotting
 library(ggplot2)
 
 # Assuming 'values' is your vector of data
-# Create a data frame with the values
+# Create a data frame with the values for plotting
 Plot <- data.frame(values)
 
-# Tracé de la boîte à moustaches
+# Plot the histogram of concordance values
 ggplot(Df, aes(x = Concordance)) +
-  geom_histogram(fill='red',color='black',binwidth = 0.003)+
-  geom_hline(yintercept = 1)+
-  geom_vline(xintercept = 0.9945)+
-  theme_bw()
+  geom_histogram(fill = 'red', color = 'black', binwidth = 0.003) + # Histogram with red fill and black borders
+  geom_hline(yintercept = 1) + # Horizontal line at y = 1
+  geom_vline(xintercept = T) + # Vertical line at the cutoff value
+  theme_bw() # Apply a clean theme
 
-## Lines to removed
-to_removed <- na.omit(Df$i[Df$Concordance<0.9945])
-to_removed <- na.omit(c(to_removed,Df$j[Df$Concordance<0.9945]))
+# Identify lines to be removed based on the concordance cutoff
+to_removed <- na.omit(Df$i[Df$Concordance < T])
+to_removed <- na.omit(c(to_removed, Df$j[Df$Concordance < T]))
 
-
-# Index des lignes à conserver
+# Create an index for rows to keep
 rows_to_keep <- !(rownames(matrix) %in% to_removed)
 
-# Index des colonnes à conserver
+# Create an index for columns to keep
 cols_to_keep <- !(colnames(matrix) %in% to_removed)
 
+# Create a new matrix with the filtered rows and columns
 new_matrix <- matrix[rows_to_keep, cols_to_keep]
 
-write.table(new_matrix,'matrix_concordance.by_hand.0.982.corrected.tsv',sep='\t',quote = FALSE)
-## To keep 
-length(values[values>=0.99])
-
-
+# Write the new matrix to a .tsv file
+write.table(new_matrix, 'matrix_concordance.by_hand.0.982.corrected.tsv', sep = '\t', quote = FALSE)
