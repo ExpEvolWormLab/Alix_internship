@@ -42,9 +42,6 @@ bcftools filter --soft-filter='high_missing' --mode + --include 'F_MISSING<=0.95
 # Hard filtering, remove sites : nonPass, multiallelic, monomorphic
 bcftools view -m2 -M2 -e 'COUNT(GT="AA")=N_SAMPLES || COUNT(GT="RR")=N_SAMPLES' -f PASS $2/Filtred/imputed.SNP.filtred.vcf.gz -O z > $2/Filtred/imputed.SNP.hard_filtred.vcf.gz
 
-#./plink -vcf Filtred/imputed.SNP.hard_filtred.vcf.gz --freq --out MAF_check --allow-extra-chr
-#Rscript --no-save "MAF_check.R"
-#./plink -vcf Filtred/imputed.SNP.hard_filtred.vcf.gz --maf 0.05 --out $2/Filtred/imputed.SNP.filtred.final.vcf.gz
 
 vcftools --maf 0.05 --gzvcf $2/Filtred/imputed.SNP.hard_filtred.vcf.gz --out $2/Filtred/imputed.SNP.filtred.final.vcf --recode
 mv $2/Filtred/imputed.SNP.filtred.final.vcf.recode.vcf $2/Filtred/imputed.SNP.filtred.final.vcf
