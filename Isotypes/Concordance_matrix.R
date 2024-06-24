@@ -42,6 +42,13 @@ get_genotype <- function(genotype) {
 
 convert_genotype <- apply(genotype_info, 2, get_genotype)
 
+## Write lines in doublons
+names <- colnames(convert_genotype)
+names <- gsub('CeMee','',names)
+names <- gsub('_sorted','',names)
+Doublons <- data.frame('Doublons'=names[names %in% names(table(names)[table(names)!=1])])
+read.csv(Doublons,"Doublons.csv")
+
 ##### Filter lines with too many NA #####
 
 # Read the distribution of NA values
