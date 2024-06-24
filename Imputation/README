@@ -1,0 +1,10 @@
+Scripts to perform imputation per population, filter it and pruned it
+
+Packages : 	Beagle5
+		bcftools 
+		GATK v4.5.0
+		plink 
+
+1. bash launch_imputation_pruning.sh final.vcf.gz output_directory
+
+		
