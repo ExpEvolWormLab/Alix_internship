@@ -14,6 +14,34 @@ T <- 0.982
 library(vcfR)
 library(ggplot2)
 
+### Read vcf file
+### Convert genotype in number (-1 for Na, 0 or 2)
+
+start_time <- Sys.time()
+
+# Read vcf file
+vcf <- read.vcfR(file)
+
+# Extract SNP positions
+snp_positions <- vcf@fix[, c("CHROM", "POS")]
+
+# Extract genotype information
+genotype_info <- vcf@gt
+
+# remove FORMAT column if it exists
+if ("FORMAT" %in% colnames(genotype_info)) {
+  genotype_info <- subset(genotype_info, select = -c(FORMAT))
+}
+
+# Function to convert genotypes
+get_genotype <- function(genotype) {
+  ifelse(substr(genotype, 1, 3) %in% c("0/0", "0|0"), 0,
+         ifelse(substr(genotype, 1, 3) %in% c("1/1", "1|1"), 2,
+                ifelse(substr(genotype, 1, 3) %in% c("./.", ".|."), NaN,NaN)))
+}
+
+convert_genotype <- apply(genotype_info, 2, get_genotype)
+
 ##### Filter lines with too many NA #####
 
 # Read the distribution of NA values
@@ -36,8 +64,6 @@ to_keep <- rownames(nbr_na[nbr_na$NA_values < T,, drop = FALSE]) # drop prevents
 
 # Reduce the genotype matrix to only include the filtered strains
 reduced_convert_genotype <- convert_genotype[, to_keep]
-
-##### SECOND PART #####
 
 ### Compute matrix which stores how many SNPs are similar between two lines
 
