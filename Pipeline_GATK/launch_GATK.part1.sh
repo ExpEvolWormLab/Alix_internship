@@ -75,5 +75,5 @@ end=$(date +%s)
 runtime=$((end - start))
 # Echo running time
 echo "launch_GATK.part1 executed successfully. Running time: $runtime seconds."
-echo "Need to create .table before running launch_GATK.part2."
-echo 'find -name *reheader.g.vcf.gz > .table | sed "s/\.\//$pwd/g"'
+echo "Need to create .list before running launch_GATK.part2."
+echo 'find -name *reheader.g.vcf.gz > .list | sed "s/\.\//$pwd/g"'
