@@ -270,7 +270,7 @@ for (i in seq_along(liste_isotypes_groups)) {
 liste_isotypes_groups <- filtered_list
 
 # Write results in .csv
-write.csv(do.call(rbind, lapply(liste_isotypes_groups, function(x) paste(x, collapse = ","))), "isotype_groups.0.982.csv", row.names = FALSE, quote = FALSE)
+write.csv(do.call(rbind, lapply(liste_isotypes_groups, function(x) paste(x, collapse = ","))), "isotype_groups.csv", row.names = FALSE, quote = FALSE)
 
 
 
