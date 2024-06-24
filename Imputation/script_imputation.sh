@@ -18,12 +18,12 @@ do
     wait
     for chrom in I II III
     do
-        java -Xmx10g -jar beagle.22Jul22.46e.jar excludemarkers="SNP_2exclude.$chrom.txt" gt="$2/${pop}_final.vcf.gz" out="$2/imputed_${chrom}_${pop}" chrom="$chrom" ne=1000 window=5 overlap=2 impute=true imp-segment=0.5 imp-step=0.01 cluster=0.0005 &
+        java -Xmx10g -jar beagle.22Jul22.46e.jar excludemarkers="SNP_2exclude.txt" gt="$2/${pop}_final.vcf.gz" out="$2/imputed_${chrom}_${pop}" chrom="$chrom" ne=1000 window=5 overlap=2 impute=true imp-segment=0.5 imp-step=0.01 cluster=0.0005 &
     done
     wait
     for chrom in IV V X
     do
-        java -Xmx10g -jar beagle.22Jul22.46e.jar excludemarkers="SNP_2exclude.$chrom.txt" gt="$2/${pop}_final.vcf.gz" out="$2/imputed_${chrom}_${pop}" chrom="$chrom" ne=1000 window=5 overlap=2 impute=true imp-segment=0.5 imp-step=0.01 cluster=0.0005 &
+        java -Xmx10g -jar beagle.22Jul22.46e.jar excludemarkers="SNP_2exclude.txt" gt="$2/${pop}_final.vcf.gz" out="$2/imputed_${chrom}_${pop}" chrom="$chrom" ne=1000 window=5 overlap=2 impute=true imp-segment=0.5 imp-step=0.01 cluster=0.0005 &
     done
     wait
 done
