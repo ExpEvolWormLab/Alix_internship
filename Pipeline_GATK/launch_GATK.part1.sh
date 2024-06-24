@@ -19,7 +19,7 @@ mkdir -p $2/GATK
 # first feature : path of the file where .bam are stored : filtrerd_bam
 # second : name of the directory where the results'll be stored  (is going to be created where the script is launch)
 
-#bash script_preprocessing_f.sh $1 $2/GATK $path_gatk $path_ref $path_known_sites 
+bash script_preprocessing_f.sh $1 $2/GATK $path_gatk $path_ref $path_known_sites 
 
 
 #### VARAINT CALLING ####
@@ -76,5 +76,5 @@ end=$(date +%s)
 runtime=$((end - start))
 # Echo running time
 echo "launch_GATK.part1 executed successfully. Running time: $runtime seconds."
-echo "Need to create .table before running launch_GATK.part2."
-echo 'find -name *reheader.g.vcf.gz > .table | sed "s/\.\//$pwd/g"'
+echo "Need to create .list before running launch_GATK.part2."
+echo 'find -name *reheader.g.vcf.gz > .list | sed "s/\.\//$pwd/g"'
