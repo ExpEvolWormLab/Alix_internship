@@ -3,8 +3,18 @@ Pipeline to lauch GATK pipeline to call variants usign tools from GATK v.4.5.0.0
 1. bash launch_GATK.part1.sh folder output_directory
 launch_GATK.part1.sh :  Pre-processing step (MarkDuplicates, AddOrReplaceReadGroups, BaseRecalibrator, ApplyBQSR)
 			Variant calling step  (HaplotypeCaller)
-folder - folder where .bam file are stored
-ouput_directory - name of the output directory (doesn't have to exist)
+Parameters :
+	folder - folder where .bam file are stored
+	ouput_directory - name of the output directory (doesn't have to exist)
+Ouputs :
+	ouput_directory/dedub_files/.sorted.dedub.bam - files with duplicated read flag
+	ouput_directory/dedub_files/.sorted.dedub.metrics.txt - duplication metrics file
+	ouput_directory/dedub_files/.sorted.dedub.RG.bam - files with read group
+	ouput_directory/BQSR_files/_recal_data.table - recalibration table
+	ouput_directory/BQSR_files/.sorted.dedub.corrected.bam - bam with base quality score corrected
+	ouput_directory/HC_files/.g.vcf.gz - g.vcf file contains all variants called
+
+
 
 2. find -name *reheader.g.vcf.gz > .list | sed "s/\.\//$pwd/g"
 Need to create a .list before running launch_GATK.part2.sh
@@ -13,7 +23,23 @@ Need to create a .list before running launch_GATK.part2.sh
 3. bash launch_GATK.part2.sh .list output_directory
 launch_GATK.part2.sh :  Genotyping step (CombineGVCFs, GenotypeGVCFs)
 			Filtration step (SelectVariants, VariantFiltration, bcftools : (view, filter))
-.list -  contains all paths of g.vcf.gz we want to combine
-ouput_directory - name of the output directory (doesn't have to exist)
+Parameters :
+	.list -  contains all paths of g.vcf.gz we want to combine
+	ouput_directory - name of the output directory (doesn't have to exist)
+Ouputs :
+        ouput_directory/All_combined.${chrom}.g.vcf.gz - Combined g.vcf for each chrom
+	ouput_directory/All_combined.final.${chrom}.vcf.gz - Genotyped combined g.vcf for each chrom
+	ouput_directory/All_Lines_Chrom.final.vcf.gz - vcf.gz with all chromosomes
+	ouput_directory/Filtred/combined.SNP.annotated.vcf.gz - vcf.gz with only SNPs
+	ouput_directory/Filtred/combined.SNP.annotated.1.vcf.gz - Remove monomorphic SNPs
+	ouput_directory/Filtred/combined.annotated.filtred.vcf.gz - Soft filtered vcf with caeNDR parameters
+	ouput_directory/Filtred/combined.annotated.filtred.1.vcf.gz - Soft filtered vcf which add filter for high heterozygotity (>85)
+	ouput_directory/Filtred/combined.without_hetero.vcf.gz - vcf with heterozygotes loci set as missing
+	ouput_directory/Filtred/combined.final.vcf.gz -  Soft filtered vcf which add filter for high missing values (>= 0.95)
+	ouput_directory/Filtred/SNP_2exclude.txt - File which contains SNPs flag as NON PASS, singletons, multi-allelic (to exclude from imputation)
+	ouput_directory/Filtred/summary.txt - Summarize how many SNPs have to be excluded in each category (a SNPs can be in several categories)
+	ouput_directory/Filtred/combined.final.hard_filter.vcf.gz - Hard filtered vcf, all SNPs in SNP_2exclude.txt are removed
+	
+	
 
 
