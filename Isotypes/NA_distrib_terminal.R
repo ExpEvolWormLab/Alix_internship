@@ -40,4 +40,12 @@ convert_genotype <- apply(genotype_info, 2, get_genotype)
 
 nbr_na <- data.frame(NA_values=colSums(is.na(convert_genotype))/nrow(convert_genotype))
 
+g <- ggplot(nbr_na, aes(x = NA_values)) + 
+  geom_histogram(fill = 'cyan', color = 'black', binwidth = 0.007) + # each bin should have a width of 0.007 unit
+  labs(title = "Missing values distribution", x = "Values", y = "Number") +
+  theme_bw()
+
+# Save the plot
+ggsave('histo_NA.pdf', g)
+
 write.csv(nbr_na,'Na_distribution.tsv',sep = '\t',row.names = FALSE, quote = FALSE)
