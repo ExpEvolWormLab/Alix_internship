@@ -13,8 +13,6 @@ start=$(date +%s)
 
 # Create directories
 mkdir -p $2
-# Store the sort files
-mkdir -p $2/sort_files
 # Store the flagged duplicates files
 mkdir -p $2/dedub_files
 # Store base quality score recalibration table and results
