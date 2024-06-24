@@ -4,7 +4,7 @@
 # second : name of the directory where the results'll be store
 
 # To change :
-path_gatk='/mnt/data2/desmarais/gatk-4.5.0.0/gatk'
+path_gatk=$3
 
 set -e #Stop if error
 start=$(date +%s) #store time
