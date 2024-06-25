@@ -1,3 +1,5 @@
+# Script to inverse the kinship matrix, they have to be inversible and the inverse has to be positive definite
+
 args <- commandArgs(trailingOnly = TRUE)
 file <- args[1]
 output <- args[2]
