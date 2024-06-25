@@ -1,1 +1,19 @@
-Codes R and bash to laucnh GBLUP analysis 
+Codes R and bash to launch GBLUP analysis 
+It is an automatised procedure, users have just to run :
+  For Multivariate analysis :
+    bash launch_GBLUP_pop.sh file.tsv
+  For Univariate analysis :
+    bash launch_GBLUP_pop.Univariate.sh file.tsv
+file.tsv - tsv file, first column path of the vcf file to use for a pop, second column name of the pop
+
+
+DETAILS : 
+launch_GBLUP_pop.sh - launch launch_GBLUP.sh
+launch_GBLUP.sh - launch 1-Kinship.R :  compute kinship matrix in three differents ways (Hoffman, NOIA, VanRaden)
+                                        ouputs : *_snp_positions.csv - SNP position
+                                                 *_t_convert_genotype.csv - Transposed genotype matrix
+                                                 Kinship_matrix_VanRaden - csv file VanRaden kinship matrix
+                                                 Kinship_matrix_Luke - csv file Hoffman kinship matrix
+                                                 Kinship_matrix_noia - csv file Noia kinship matrix
+                  launch launch_GBLUP.parallele.sh : launch rest of the procedure using the three way of computing GRM
+
