@@ -1,9 +1,5 @@
-## Script to backsolve ##
-# To change
-# Set working directory 
-#setwd("~/Documents/Worms/GBLUP")
-# Name of vcf file to use
-#file <- 'founders.imputed.SNP.filtred.final.vcf.gz'
+## Script to backsolve multivariate analysis ##
+
 args <- commandArgs(trailingOnly = TRUE)
 file <- args[1] # Sol
 file1 <- args[2] # M
@@ -13,9 +9,6 @@ file2 <- args[3] # snp_pos
 output <- args[4]
 
 library(data.table)
-
-populations <- c("A6")
-#populations <- c("A6",  "CA1",  "CA2",  "CA3",  "EEV",  "GA1",  "GA2",  "GA4",  "GM1",  "GM3",  "GT1",  "GT2",  "LR1",  "LR3", "SMR2", "SMR4")
 
 model_MCMC_WI_Sol <- read.csv(file)
 M <- as.data.frame(fread(file1))
