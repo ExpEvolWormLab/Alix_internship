@@ -22,7 +22,7 @@ do
 		echo "$2_${i}: MCMCglmm_model executed"
 
 		if [ $? -eq 0 ]; then #Different sessions
-	                Rscript 4-Diagnostic.Univariate.R "$2_${i}_${trait}_MCMCmodel_Sol.csv" "$2_${i}_MCMCmodel_VCV.csv" 'session_id' $trait $2_${i}_$trait
+	                Rscript 4-Diagnostic.Univariate.R "$2_${i}_${trait}_MCMCmodel_Sol.csv" "$2_${i}_${trait}_MCMCmodel_VCV.csv" 'session_id' $trait $2_${i}_$trait
         	        echo "$2_${i}: Diagnostic executed"
         	else
                 	Rscript 4-Diagnostic.Univariate.R "$2_${i}_${trait}_MCMCmodel_Sol.csv" "$2_${i}_${trait}_MCMCmodel_VCV.csv" '' $trait $2_${i}_$trait
@@ -42,7 +42,7 @@ do
                 echo "$2_${i}: MCMCglmm_model executed"
 
 		if [ $? -eq 0 ]; then #Different sessions
-                        Rscript 4-Diagnostic.Univariate.R "$2_${i}_${trait}_MCMCmodel_Sol.csv" "$2_${i}_MCMCmodel_VCV.csv" 'session_id' $trait $2_${i}_$trait
+                        Rscript 4-Diagnostic.Univariate.R "$2_${i}_${trait}_MCMCmodel_Sol.csv" "$2_${i}_${trait}_MCMCmodel_VCV.csv" 'session_id' $trait $2_${i}_$trait
                         echo "$2_${i}: Diagnostic executed"
                 else
                         Rscript 4-Diagnostic.Univariate.R "$2_${i}_${trait}_MCMCmodel_Sol.csv" "$2_${i}_${trait}_MCMCmodel_VCV.csv" '' $trait $2_${i}_$trait
