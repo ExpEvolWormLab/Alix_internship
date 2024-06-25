@@ -1,3 +1,5 @@
+## Script to inverse the GRM matrix, they have to be positive definite
+
 args <- commandArgs(trailingOnly = TRUE)
 file <- args[1]
 output <- args[2]
