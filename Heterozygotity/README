@@ -1,0 +1,5 @@
+Set of script to get heterozygotity along chromosomes and to plot it
+
+1-Get_hetero.R :
+  Rscript 1-Get_hetero.R het_flag.vcf
+Parameters: het_flag.vcf - vcf file when heterozygotes loci where flag as is_het 
