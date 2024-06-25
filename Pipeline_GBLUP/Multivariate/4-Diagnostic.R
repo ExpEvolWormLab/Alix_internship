@@ -1,17 +1,11 @@
-# To change
-# Set working directory 
-#setwd("~/Documents/Worms/GBLUP")
-# Name of vcf file to use
-#file <- 'founders.imputed.SNP.filtred.final.vcf.gz'
+### Script to diagnostic MCMCglmm model - Multivariate analysis
+
+
 args <- commandArgs(trailingOnly = TRUE)
 file <- args[1] # Sol
 file1 <- args[2] # VCV
 session <- args[3]
-# Name of output
 output <- args[4]
-populations <- c("A6")
-#populations <- c("A6",  "CA1",  "CA2",  "CA3",  "EEV",  "GA1",  "GA2",  "GA4",  "GM1",  "GM3",  "GT1",  "GT2",  "LR1",  "LR3", "SMR2", "SMR4")
-
 
 # Load packages
 options(rgl.useNULL=TRUE)
