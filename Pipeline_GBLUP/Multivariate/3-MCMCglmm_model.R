@@ -1,24 +1,11 @@
-## Script to developp GWAS using MCMCglmm 
-# First step : construct kinship matrix
-# Second step : GBLUP
-# Third step : backsolving
-# Four step : use distribution and SNP effect to conduct a GWA
+## Script to developp GWAS using MCMCglmm : GBLUP step
 
-# To change
-# Set working directory 
-#setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP")
-# Name of vcf file to use
-#file <- 'founders.imputed.SNP.filtred.final.vcf.gz'
+
 args <- commandArgs(trailingOnly = TRUE)
 matrix <- args[1]
 M_file <- args[2] 
-# Name of output
-#output <- 'A6_SNPready'
 condition <- args[3]
 output <- args[4]
-populations <- c("A6")
-#populations <- c("A6",  "CA1",  "CA2",  "CA3",  "EEV",  "GA1",  "GA2",  "GA4",  "GM1",  "GM3",  "GT1",  "GT2",  "LR1",  "LR3", "SMR2", "SMR4")
-
 
 # Load packages
 options(rgl.useNULL=TRUE)
