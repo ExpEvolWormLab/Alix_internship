@@ -1,25 +1,11 @@
-## Script to developp GWAS using MCMCglmm 
-# First step : construct kinship matrix
-# Second step : GBLUP
-# Third step : backsolving
-# Four step : use distribution and SNP effect to conduct a GWA
+## Script to developp GWAS using MCMCglmm : fit MCMCglmm model (GBLUP)
 
-
-# To change
-# Set working directory 
-#setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP")
-# Name of vcf file to use
-#file <- 'founders.imputed.SNP.filtred.final.vcf.gz'
 args <- commandArgs(trailingOnly = TRUE)
 matrix <- args[1]
 M_file <- args[2] 
-# Name of output
-#output <- 'A6_SNPready'
 condition <- args[3]
 trait <- args[4]
 output <- args[5]
-populations <- c("A6")
-#populations <- c("A6",  "CA1",  "CA2",  "CA3",  "EEV",  "GA1",  "GA2",  "GA4",  "GM1",  "GM3",  "GT1",  "GT2",  "LR1",  "LR3", "SMR2", "SMR4")
 
 matrix <- 'Inverted_kinship_matrix_VanRaden_GA.csv'
 M_file <- 'GA_t_convert_genotype.csv'
@@ -55,7 +41,6 @@ pheno <- pheno[,c('pop_label','temperature','rel_humidity',"session_id",
 ## Kept only lines with phenotypes
 pheno_subset<-pheno[pheno$pop_label %in% colnames(Ginv),]
 pheno_subset<-pheno_subset[pheno_subset$env_label==condition,]
-#pheno_subset<-pheno_subset[complete.cases(pheno_subset[,c('temperature', 'rel_humidity', 'logD')]),]
 Ginv <- Ginv[rownames(Ginv) %in% pheno_subset$pop_label,rownames(Ginv) %in% pheno_subset$pop_label]
 M <- M[rownames(M) %in% pheno_subset$pop_label,]
 
@@ -73,9 +58,6 @@ for(j in c('temperature',"rel_humidity","logD")){
 for(j in vect_P_traits){
   pheno_subset[,j]<-(pheno_subset[,j]-mean(pheno_subset[,j], na.rm = TRUE))
 }
-# for(j in colnames(pheno_subset)){
-#   pheno_subset[,j]<-as.factor(pheno_subset[,j])
-# }
 
 #### GBLUP ####
 # Model as : y= Xb + Wr + u + e 
@@ -109,7 +91,6 @@ if (length(unique(pheno_subset$session_id)) != 1) {
                             thin = 100, 
                             pr = TRUE)
 } else {
-  print('miaou')
   fixed_effects <- paste(trait, "~ logD + rel_humidity + temperature - 1")
   formula = as.formula(paste(fixed_effects, collapse = " + "))
   model_MCMC_WI <- MCMCglmm(fixed=formula, 
