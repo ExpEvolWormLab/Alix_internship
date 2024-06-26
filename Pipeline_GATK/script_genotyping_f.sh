@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# first feature : path of the file where .table is stored
+# first feature : path of the file where .list is stored
 # second : name of the directory where the results'll be stored  (is going to be created where the script is launch)
 
 
