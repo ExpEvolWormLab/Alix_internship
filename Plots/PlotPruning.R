@@ -1,4 +1,6 @@
-## Script to plot pruning results
+## Script to plot pruning results : number of SNPs kept at each stage
+## output : BarPlot_pruning.pdf - plot number of SNPs per threshold of pruning in each population
+#            Reduce_BarPlot_pruning.pdf - plot only for A6 and founders
 
 setwd("~/Documents/Worms/GBLUP/Results_Pruning")
 
