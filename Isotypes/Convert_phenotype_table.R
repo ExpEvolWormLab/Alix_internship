@@ -8,7 +8,7 @@ correspondance_file <- "correspondance_isotypes.csv"
 # Name of phenotype table to modify (need to have "pop_label" column)
 pheno_file <- "~/Documents/Worms/GBLUP/Transition_rates_estimates_may2024_export.txt"
 # Name of output 
-output <- Final_Transition_rates_estimates_may2024_export.csv
+output <- "Final_Transition_rates_estimates_may2024_export.csv"
 
 ## Load correpsondace table
 correspondance_isotypes <- read.csv(correspondance_file)
