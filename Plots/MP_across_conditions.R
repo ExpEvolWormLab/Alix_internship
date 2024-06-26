@@ -1,4 +1,7 @@
 ### Script to compare credible SNP between conditions
+## Output : Manhattan Plot - effet median a postefiori of SNP along chromosome colored by association in the two environments
+
+
 output <- 'VanRaden_A6'
 
 
