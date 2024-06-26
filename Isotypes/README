@@ -26,4 +26,9 @@ Set of script to obtain isotypes groups
  		 Distribution_isotypes.csv - Number of lines in each pop which belong to an insotype group
 		 correspondance_isotypes.csv - Lines belonging to an isotype group and the line which represents it
 		 Removed_line_isotypes.csv - Store names of lines which were removed because they belong to an isotype group
+
+
+Convert_phenotype_table.R
+	Convert phenotype table to modify name of the line which belong to an isotype groups (as described in correspondance_isotypes.csv)
+	ouput : Final_Transition_rates_estimates_may2024_export.csv
 	
