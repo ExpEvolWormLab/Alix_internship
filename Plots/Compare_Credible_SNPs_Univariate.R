@@ -1,21 +1,29 @@
+### SINGLE-TRAIT
+## Output : 
+#    Shared_credible_SNPs*tsv : file with two columns Comparison Nbr_SNPs, compare each traits and store the number of credible SNPs they share 
+#    Shared_credible_SNPs*pdf : plot the previous files
+#    Repartition_SNPs_along_K : for each SNPs plot it along chromosome in function of the number of groups they are associated with
+
 ### Script which compare the credible SNP for each trait for single trait
 output <- 'Uni_VanRaden_A6_NGM_0.99'
 setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/Pruned")
-#setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/A6")
 
+# Load necessary libraries
 library(tidyr)
 library(ggplot2)
 
-# Charger les fichiers CSV
-files <- list.files(pattern = "Summary_.*_Uni_VanRaden_A6_NGM_0.99.csv")
-file_names <- sub("Summary_(.*)_Uni_VanRaden_A6_NGM_0.99.csv", "\\1", files)
+# Load the CSV files matching the pattern
+motif <- paste0("Summary_.*_", output, ".csv")
+motif1 <- paste0("Summary_(.*)_", output, ".csv")
+files <- list.files(pattern = motif)
+file_names <- sub(motif1, "\\1", files)
 dfs <- lapply(files, read.csv)
 setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/A6")
 
-# Filtrer les lignes "Credible"
+# Filter for rows marked as "Credible"
 credibles <- lapply(dfs, function(df) df[df$credible == "Credible",]$X)
 
-# Fonction pour comparer les noms de lignes crédibles entre des groupes de dataframes
+# Function to compare the names of credible rows between groups of data frames
 compare_lists <- function(lists) {
   if (length(lists) == 1) {
     return(lists[[1]])
@@ -28,11 +36,10 @@ compare_lists <- function(lists) {
   }
 }
 
-
-
-# Générer toutes les combinaisons possibles
+# Generate all possible combinations
 library(combinat)
 
+# Store results for individual comparisons
 results_solo <- list()
 results_solo[[paste0("combinations_", 1)]] <- lapply(seq_along(dfs), function(idx) {
   list(
@@ -41,10 +48,11 @@ results_solo[[paste0("combinations_", 1)]] <- lapply(seq_along(dfs), function(id
   )
 })
 
+# Store results for combined comparisons
 results <- list()
 for (i in 2:length(credibles)) {
   comb <- combn(seq_along(credibles), i, simplify = FALSE)
-  comb_names <- combn(file_names , i, simplify = FALSE)
+  comb_names <- combn(file_names, i, simplify = FALSE)
   results[[paste0("combinations_", i)]] <- lapply(seq_along(comb), function(idx) {
     list(
       combination = comb_names[[idx]],
@@ -53,15 +61,14 @@ for (i in 2:length(credibles)) {
   })
 }
 
+# Display results
+# Open a file for writing
+output_file <- file(gsub('XXX', output, 'Shared_credible_SNPs_XXX.tsv'), open = "wt")
 
-# Affichage des résultats
-# Ouvrir un fichier en écriture
-output_file <- file(gsub('XXX',output,'Shared_credible_SNPs_XXX.tsv'), open = "wt")
-
-# Écrire l'entête dans le fichier
+# Write header to the file
 cat("Comparison\tNbr_SNPs\n", file = output_file)
 
-# Parcourir les résultats et écrire dans le fichier
+# Write solo results to the file
 for (i in seq_along(results_solo)) {
   for (k in seq_along(results_solo[[i]])) {
     cat(paste(results_solo[[i]][[k]]$combination, collapse = ","), "\t", file = output_file)
@@ -70,11 +77,10 @@ for (i in seq_along(results_solo)) {
   cat("\n", file = output_file)
 }
 
-# Parcourir les résultats et écrire dans le fichier
-# Parcourir les résultats et écrire dans le fichier
+# Write combined results to the file
 for (i in seq_along(results)) {
   print(i)
-  if (i == 6) {
+  if (i == 6) { # Limit to 6 comparisons
     cat(paste(results[[i]]$combination, collapse = ","), "\t", file = output_file)
     cat(length(results[[i]]$intersection), "\n", file = output_file)
     break
@@ -88,36 +94,34 @@ for (i in seq_along(results)) {
   }
 }
 
-# Fermer le fichier
+# Close the output file
 close(output_file)
 
-data <- read.delim(gsub('XXX',output,'Shared_credible_SNPs_XXX.tsv'))
+# Read the output file into a data frame
+data <- read.delim(gsub('XXX', output, 'Shared_credible_SNPs_XXX.tsv'))
 
-# Ajouter une colonne indiquant le nombre d'éléments comparés dans chaque combinaison
+# Add a column indicating the number of elements compared in each combination
 data$Num_Comparisons <- sapply(strsplit(as.character(data$Comparison), ","), length)
 
-
+# Plot the number of credible SNPs shared between different traits
 ggplot(data, aes(x = Comparison, y = Nbr_SNPs, fill = Comparison)) +
   geom_bar(stat = "identity") +
   labs(x = "Traits", y = "Number of SNPs", title = "Number of credible SNPs Shared between Different Trait") +
-  theme_minimal()+
+  theme_minimal() +
   scale_x_discrete(labels = function(x) gsub(",", "\n", x)) +
-  facet_wrap(~ Num_Comparisons, ncol = 2, scales = "free")+
+  facet_wrap(~ Num_Comparisons, ncol = 2, scales = "free") +
   theme(legend.position = "none", axis.text.x = element_text(size = 7))
 
-ggsave(gsub('XXX',output,'Shared_credible_SNPs_XXX_plot.pdf'))
+# Save the plot to a PDF file
+ggsave(gsub('XXX', output, 'Shared_credible_SNPs_XXX_plot.pdf'))
 
-
-
-#### Ecrire fichier qui contient ID_SNP Nbr_Trait pour chaque SNPs credible dans au moins un dataframe
-# Créer une liste pour stocker le compte de chaque SNP
+#### Write file that contains ID_SNP Nbr_Trait for each credible SNP in at least one dataframe
+# Create a list to store the count of each SNP
 snp_count <- list()
 
-# Parcourir chaque fichier
+# Loop through each data frame to count credible SNPs
 for (i in 1:length(dfs)) {
-  # Extraire les SNP crédibles du fichier
   snps <- dfs[[i]][dfs[[i]]$credible == "Credible", "X"]
-  # Mettre à jour le compte de chaque SNP
   for (snp in snps) {
     if (is.null(snp_count[[snp]])) {
       snp_count[[snp]] <- 1
@@ -127,31 +131,31 @@ for (i in 1:length(dfs)) {
   }
 }
 
-# Créer un dataframe avec les SNP et leur compte
+# Create a data frame with SNP and their counts
 snp_df <- data.frame(
   SNP = names(snp_count),
   Count = unlist(snp_count)
 )
-# Diviser la colonne SNP_CHROM en deux colonnes distinctes pour le SNP et le CHROM
-snp_df <- separate(snp_df, SNP, into = c("CHROM","POS"), sep = "_", remove = FALSE)
 
+# Split the SNP column into separate CHROM and POS columns
+snp_df <- separate(snp_df, SNP, into = c("CHROM", "POS"), sep = "_", remove = FALSE)
 
-# Écrire le dataframe dans un fichier CSV
-write.csv(snp_df, gsub('XXX',output,"SNP_Count_XXX.csv"),quote=FALSE, row.names = FALSE)
+# Write the data frame to a CSV file
+write.csv(snp_df, gsub('XXX', output, "SNP_Count_XXX.csv"), quote = FALSE, row.names = FALSE)
 
-all_snps <- dfs[[1]][,'X']
-not_credible <- data.frame(SNP=all_snps[!(all_snps %in% snp_df$SNP)],Count=0)
-not_credible  <- separate(not_credible , SNP, into = c("CHROM","POS"), sep = "_", remove = FALSE)
+# Identify SNPs that are not credible and set their count to 0
+all_snps <- dfs[[1]][, 'X']
+not_credible <- data.frame(SNP = all_snps[!(all_snps %in% snp_df$SNP)], Count = 0)
+not_credible <- separate(not_credible, SNP, into = c("CHROM", "POS"), sep = "_", remove = FALSE)
 
-SNP_df <- data.frame(rbind(not_credible,snp_df))
-# a. Manhattan plot bayésien
+# Combine credible and not credible SNPs into one data frame
+SNP_df <- data.frame(rbind(not_credible, snp_df))
 
-# Convertir la variable POS en numérique
+# Manhattan plot for the distribution of SNPs along chromosomes
+# Convert the POS variable to numeric
 SNP_df$POS <- as.numeric(SNP_df$POS)
 
-# Créer le graphique en utilisant la palette de couleurs
-palette <- rainbow(length(unique(SNP_df$Count)))
-
+# Create the plot using ggplot2
 repartition <- ggplot(SNP_df, aes(x = POS, y = Count, color = factor(Count))) +
   geom_point(size = 0.5) +
   theme_minimal() +
@@ -161,11 +165,11 @@ repartition <- ggplot(SNP_df, aes(x = POS, y = Count, color = factor(Count))) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5), 
         axis.ticks.x = element_blank()) +
   facet_wrap(~ CHROM, ncol = 2, scales = "free_x") +
-  scale_x_continuous(breaks = seq(0, max(SNP_df$POS), by = 1000000))+
+  scale_x_continuous(breaks = seq(0, max(SNP_df$POS), by = 1000000)) +
   theme(legend.position = "none")
 
+# Print the plot
 print(repartition)
 
-ggsave(gsub('XXX',output,'Repartition_SNPs_along_K_XXX.pdf'))
-
-          
+# Save the plot to a PDF file
+ggsave(gsub('XXX', output, 'Repartition_SNPs_along_K_XXX.pdf'))
