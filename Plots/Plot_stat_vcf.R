@@ -1,7 +1,7 @@
 ### Script for analysing PSC results from output of bcftools stats
 
 # First PSC need to be grep from output of bcftools stats with the following cmd
-#grep "^PSC" output.vchk > output_PSC.tsv
+#grep "^PSC" output.vchk > output_PSC.tsv - Done in analyze_vcf.sh
 
 # Name working directory 
 setwd("~/Documents/Worms/VariantCalling/Stats")
