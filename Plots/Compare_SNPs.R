@@ -1,40 +1,51 @@
 ### Script to compare credible SNP between MT and ST
+## Outputs 
+#    Manhattan_plots : median a posteriori snp effect along chromosome colored by association
+#    Density_plots : density function for effect of SNPs in MT and ST
+#    Combined_bar_plots : repartition of associated SNPs shared between MT and ST, only in ST, only in MT
+
+
+# Output is also the name of the summary to include in the analysis
 output <- 'VanRaden_A6_NGM_0.99'
 
+# Set working directory to where MT (multi-trait) files are stored
+setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Pruned")
 
+# Load CSV files matching the pattern for MT
+motif <- paste0("Summary_(.*)_", output, ".csv")
+files <- list.files(pattern = gsub('XXX', output, "Summary_[A-Z]*_XXX.csv"))
+file_outputs_MT <- sub(motif, "\\1", files)
+dfs_MT <- lapply(files, read.csv)
+
+# Set working directory to where ST (single-trait) files are stored
+setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/Pruned")
+
+# Load CSV files matching the pattern for ST
+motif_uni <- paste0("Summary_(.*)_Uni_", output, ".csv")
+files <- list.files(pattern = gsub('XXX', output, "Summary_[A-Z]*_Uni_XXX.csv"))
+file_outputs_ST <- sub(motif_uni, "\\1", files)
+dfs_ST <- lapply(files, read.csv)
+
+# Set working directory to where SNP count file for ST is stored
+setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/A6")
+
+# Load SNP count file for ST and keep only SNPs associated with one trait
+snp_df <- read.csv(gsub('XXX', output, "SNP_Count_Uni_XXX.csv"))
+snp_df <- snp_df[snp_df$Count == 1, ]
+
+# Set working directory to where SNP count file for MT is stored
+setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Results")
+snp_df_MT <- read.csv(gsub('XXX', output, "SNP_Count_XXX.csv"))
+
+# Set working directory to root project folder
+setwd("~/Documents/Worms/GBLUP")
+
+# Load necessary libraries
 library(ggplot2)
 library(matrixStats)
 library(tidyr)
 library(gridExtra)
 library(grid)
-
-
-setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Pruned")
-#setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Results")
-# Charger les fichiers CSV
-files <- list.files(pattern = gsub('XXX',output,"Summary_[A-Z]*_XXX.csv"))
-file_outputs_MT <- sub("Summary_(.*)_VanRaden_A6_NGM_0.99.csv", "\\1", files)
-dfs_MT <- lapply(files, read.csv)
-
-
-
-setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/Pruned")
-#setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/A6")
-files <- list.files(pattern = gsub('XXX',output,"Summary_[A-Z]*_Uni_XXX.csv"))
-file_outputs_ST <- sub("Summary_(.*)_Uni_VanRaden_A6_NGM_0.99.csv", "\\1", files)
-dfs_ST <- lapply(files, read.csv)
-
-setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/A6")
-## Keep only SNP that are only associate with one trait
-snp_df <- read.csv(gsub('XXX',output,"SNP_Count_Uni_XXX.csv"))
-snp_df <- snp_df[snp_df$Count==1,]
-
-setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Results")
-snp_df_MT <- read.csv(gsub('XXX',output,"SNP_Count_XXX.csv"))
-
-setwd("~/Documents/Worms/GBLUP")
-
-
 
 # Combine the MT and ST data frames
 combined_dfs <- list()
@@ -49,7 +60,6 @@ for (i in 1:length(dfs_MT)) {
   combined_dfs[[i]] <- combined_df
 }
 
-
 # Plotting
 plots <- list()
 plots_mp <- list()
@@ -58,7 +68,7 @@ for (i in 1:length(combined_dfs)) {
   df <- combined_dfs[[i]]
   df <- separate(df, X, into = c("CHROM", "POS"), sep = "_", remove = FALSE)
   df$POS <- as.numeric(df$POS)
-  df$CHROM <- gsub('23','X',df$CHROM)
+  df$CHROM <- gsub('23', 'X', df$CHROM)
   
   trait <- file_outputs_MT[[i]]
   
@@ -75,26 +85,24 @@ for (i in 1:length(combined_dfs)) {
     scale_alpha_manual(values = c("Not Credible" = 0.2, "Credible MT" = 1, "Credible ST" = 1)) +
     theme_minimal() +
     ggtitle(paste("Manhattan Plot Bayésien", trait)) +
-    labs(x = "SNPs",
-         y = "Effet médian à posteriori") +
+    labs(x = "SNPs", y = "Effet médian à posteriori") +
     theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
     facet_wrap(~ CHROM, ncol = 2, scales = "free_x")
   
-  ggsave(paste0('Manhattan_plots_', output, '-',trait,'.pdf'))
+  ggsave(paste0('Manhattan_plots_', output, '-', trait, '.pdf'))
   plots_mp[[i]] <- manhattan_plot
   
   # Density plot for credible SNPs
-  df_cred_MT <- df[df$credible_status == 'Credible MT',]
-  df_cred_ST <- df[df$credible_status == 'Credible ST',]
+  df_cred_MT <- df[df$credible_status == 'Credible MT', ]
+  df_cred_ST <- df[df$credible_status == 'Credible ST', ]
   
   g <- ggplot() +
-    geom_density(data = df[df$credible_status == 'Not Credible',], aes(x = median, fill = 'Not Credible'), color = 'grey', alpha = 0.3) +
+    geom_density(data = df[df$credible_status == 'Not Credible', ], aes(x = median, fill = 'Not Credible'), color = 'grey', alpha = 0.3) +
     geom_density(data = df_cred_MT, aes(x = median, fill = 'Credible MT'), color = 'red', alpha = 0.3) +
     geom_density(data = df_cred_ST, aes(x = median, fill = 'Credible ST'), color = 'blue', alpha = 0.3) +
     scale_fill_manual(name = "Status", values = c("Not Credible" = 'grey', "Credible MT" = 'red', "Credible ST" = 'blue')) +
     labs(title = paste("Density median SNPs effects -", trait),
-         x = "Médiane",
-         y = "Densité") +
+         x = "Médiane", y = "Densité") +
     theme_minimal()
   
   plots[[i]] <- g
@@ -138,8 +146,7 @@ pdf('Legend_density.pdf')
 grid.arrange(legend)
 dev.off()
 
-
-# Créer un dataframe combiné pour tous les bar plots
+# Create a combined data frame for all bar plots
 all_bar_data <- data.frame()
 
 for (i in 1:length(combined_dfs)) {
@@ -155,8 +162,8 @@ for (i in 1:length(combined_dfs)) {
   trait <- file_outputs_MT[[i]]
   
   # Compare SNPs credible in both conditions
-  df_cred_MT <- df[df$credible_status == 'Credible MT',]
-  df_cred_ST <- df[df$credible_status == 'Credible ST',]
+  df_cred_MT <- df[df$credible_status == 'Credible MT', ]
+  df_cred_ST <- df[df$credible_status == 'Credible ST', ]
   
   snps_cred_MT <- df_cred_MT$X
   snps_cred_ST <- df_cred_ST$X
@@ -169,7 +176,7 @@ for (i in 1:length(combined_dfs)) {
   # SNPs only in ST but shared by other traits
   unique_ST_shared <- unique_ST[unique_ST %in% snp_df$SNP]
   
-  # Préparer les données pour le bar plot
+  # Prepare data for bar plot
   bar_data <- data.frame(
     Category = c("Only MT", "Common", "Only ST (Shared)", "Only ST (Not Shared)"),
     Count = c(length(unique_MT), length(common_snps), length(unique_ST_shared), length(unique_ST_not_shared)),
@@ -179,19 +186,16 @@ for (i in 1:length(combined_dfs)) {
   all_bar_data <- rbind(all_bar_data, bar_data)
 }
 
-# Créer le bar plot combiné
+# Create the combined bar plot
 combined_bar_plot <- ggplot(all_bar_data, aes(x = Category, y = Count, fill = Trait)) +
   geom_bar(stat = "identity", position = "stack", colour = "black") +
-  labs(title = "Comparison of Credible SNPs",
-       x = "Category",
-       y = "Count") +
+  labs(title = "Comparison of Credible SNPs", x = "Category", y = "Count") +
   theme_minimal()
 
-# Sauvegarder le bar plot combiné
+# Save the combined bar plot
 pdf(paste0('Combined_Bar_plots_', output, '.pdf'), width = 14, height = 10)
 print(combined_bar_plot)
 dev.off()
-
 
 # Loop through each dataframe in the combined_dfs list
 for (i in 1:length(combined_dfs)) {
@@ -212,8 +216,8 @@ for (i in 1:length(combined_dfs)) {
   trait <- file_outputs_MT[[i]]
   
   # Filter dataframes for credible SNPs in MT and ST
-  df_cred_MT <- df[df$credible_status == 'Credible MT',]
-  df_cred_ST <- df[df$credible_status == 'Credible ST',]
+  df_cred_MT <- df[df$credible_status == 'Credible MT', ]
+  df_cred_ST <- df[df$credible_status == 'Credible ST', ]
   
   # Extract SNPs that are credible in MT and ST
   snps_cred_MT <- df_cred_MT$X
@@ -231,15 +235,14 @@ for (i in 1:length(combined_dfs)) {
   unique_ST_shared <- unique_ST[unique_ST %in% snp_df$SNP]
   
   # Subset snp_df_MT for SNPs in unique_ST_not_shared
-  snp_df_MT_sub <- snp_df_MT[snp_df_MT$SNP %in% unique_ST_not_shared,]
+  snp_df_MT_sub <- snp_df_MT[snp_df_MT$SNP %in% unique_ST_not_shared, ]
   
   # Print the results
   cat(paste(
     trait, 
     'Number of traits in ST_not_shared:', length(unique_ST_not_shared), 
     '\nNumber of them pleiotropic in MT (associated with another trait):', sum(snp_df_MT_sub$Count != 1), 
-    '\nNon-pleiotropic in MT (associated with another trait):',sum(snp_df_MT_sub$Count == 1),
-    # '\nNon-pleiotropic in MT (associated with another trait):', paste(snp_df_MT_sub[snp_df_MT_sub$Count == 1,]$SNP, collapse = ", "), 
+    '\nNon-pleiotropic in MT (associated with another trait):', sum(snp_df_MT_sub$Count == 1),
     '\n\n'
   ))
 }
