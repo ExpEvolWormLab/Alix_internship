@@ -2,7 +2,7 @@
 ## Script to summarize information about read for lines in a specific folder
 ## folder has to contains fastp_reports folder and a filtred_bam folder
 ## File names as to be specified in the fastp_reports folder as Name.*.json
-## File names as to be specified in the filtered_bam folder as Name_*.json
+## File names as to be specified in the filtered_bam folder as Name_*.bam
 #Path is given as $1
 
 echo -e "Line\tReads\tReads_after_fastp\tReads_final\tCoverage" > summary_reads.tsv
