@@ -1,4 +1,4 @@
-## Script to create a table which contains all informations about population origin
+## Script to create two table which contains all informations about population origin
 #To change
 setwd("~/Documents/Worms/DataAnalysis/Analyse_summary_tables")
 
@@ -13,46 +13,6 @@ table_02 <- read.delim("summary_reads_02.without_founders.tsv")
 ## Set the batch name
 liste_table <- list(table_RILs_Tom,table_CeMee,table_CeMee_missing,table_00,table_01,table_02)
 batch_list <- c("Recombinant","CeMee","CeMee","NYC_1","NYC_2","NYC_3")
-
-
-## Initialize Df 
-Df_no_concat <- data.frame(Population = character(),
-                 Num_generation = character(),
-                 Num_line = character(),
-                 Batch = character(),
-                 stringsAsFactors = FALSE)
-
-Df <- data.frame(Population = character(),
-                           Num_generation = character(),
-                           Num_line = character(),
-                           Batch = character(),
-                           stringsAsFactors = FALSE)
-
-
-for (i in seq_along(liste_table)) {
-  # Extract the current table from the list
-  table <- liste_table[[i]]
-  
-  # Extract the corresponding batch name
-  batch_name <- batch_list[i]
-  Df_no_concat <- extract_line_no_concat(table,Df_no_concat,batch_name)
-  Df <- extract_line(table,Df,batch_name)
-}
-
-## Sort dataframes
-Df <- Df[order(Df$Population), ]
-Df_no_concat <- Df_no_concat[order(Df_no_concat$Population), ]
-
-## get the number of replicat
-num_rep <- length(rownames(Df[grepl(",",Df$Batch),]))
-
-## Write results in table
-write.table(x = Df,file = "Table_composition.tsv",sep = "\t",row.names = FALSE,quote = FALSE)
-
-table(Df_no_concat[c("Population","Batch")]) #Pb on a N2_AN dans CeMee et CB ?
-write.table(table(Df_no_concat[c("Population","Batch")]),file = "Table_Batch_X_Pop.tsv",sep = '\t',quote = FALSE)
-
-
 
 ####### FUNCTIONS #######@
 
@@ -153,4 +113,45 @@ extract_line_no_concat <- function(table,Df,name_batch){
   }
   return(Df)
 }
+
+
+## Initialize Df 
+Df_no_concat <- data.frame(Population = character(),
+                 Num_generation = character(),
+                 Num_line = character(),
+                 Batch = character(),
+                 stringsAsFactors = FALSE)
+
+Df <- data.frame(Population = character(),
+                           Num_generation = character(),
+                           Num_line = character(),
+                           Batch = character(),
+                           stringsAsFactors = FALSE)
+
+
+for (i in seq_along(liste_table)) {
+  # Extract the current table from the list
+  table <- liste_table[[i]]
+  
+  # Extract the corresponding batch name
+  batch_name <- batch_list[i]
+  Df_no_concat <- extract_line_no_concat(table,Df_no_concat,batch_name)
+  Df <- extract_line(table,Df,batch_name)
+}
+
+## Sort dataframes
+Df <- Df[order(Df$Population), ]
+Df_no_concat <- Df_no_concat[order(Df_no_concat$Population), ]
+
+## get the number of replicat
+num_rep <- length(rownames(Df[grepl(",",Df$Batch),]))
+
+## Write results in table
+write.table(x = Df,file = "Table_composition.tsv",sep = "\t",row.names = FALSE,quote = FALSE)
+
+write.table(table(Df_no_concat[c("Population","Batch")]),file = "Table_Batch_X_Pop.tsv",sep = '\t',quote = FALSE)
+
+
+
+
 
