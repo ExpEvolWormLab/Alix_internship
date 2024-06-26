@@ -1,6 +1,12 @@
 #!/bin/bash
+
+## Script to analyse a vcf file 
+## Need its output for Plot_stat_vcf.R 
+
 # First argument : file to analyse
 # Second name of output
+
+# Outputs : pdf file with plots and summary, .vchk needed for Plot_stat_vcf.R 
 
 bcftools query -l $1 > "sample.name"
 bcftools stats -S "sample.name" $1 > "output_$2.vchk"
