@@ -15,6 +15,7 @@ for pop in A6 CA EEV GA GM GT LR SMR # For each population
 do
 	(
 		bcftools concat --naive imputed_*_$pop.vcf.gz -O z > imputed_All_$pop.vcf.gz
+  		# Name SNPs
 		bcftools reheader -f chrom_lenght.fa.fai imputed_All_$pop.vcf.gz > imputed_All_$pop.H.vcf.gz
 		bcftools annotate --set-id +'%CHROM\_%POS' imputed_All_$pop.H.vcf.gz  -O z > imputed_All_$pop.ID.vcf.gz
 		bash script_filtration_imputation.sh imputed_All_$pop.ID.vcf.gz $pop
