@@ -36,12 +36,12 @@ bash launch_GBLUP_pop.Univariate.sh file.tsv
 
 ### `launch_GBLUP.parallele.sh`
 
-1. **Launches `2-Invert_GRM.R`:**
+A. **Launches `2-Invert_GRM.R`:**
    - Computes the inverse of the kinship matrix if it's ill-conditioned or not positive definite, and modifies it slightly
    - Output:
      - `Inverted_kinship_matrix.csv`: Inverted kinship matrix
 
-2. **Launches `3-MCMCglmm_model.R`:**
+B. **Launches `3-MCMCglmm_model.R`:**
    - Fits the GBLUP model: \( Y = Xb + Wr + Zu + e \)
      - \( Y \): Phenotypes
      - \( X \): Matrix of fixed effects (temperature, density, humidity, session (only if not always the same))
@@ -52,12 +52,12 @@ bash launch_GBLUP_pop.Univariate.sh file.tsv
      - `MCMCmodel_Sol.csv`: A posteriori distribution for each line for each trait and effect
      - `MCMCmodel_VCV.csv`: Variance-covariance between traits and effects
 
-3. **Launches `4-Diagnostic.R`:**
+C. **Launches `4-Diagnostic.R`:**
    - Provides a visual diagnostic of the convergence of the MCMCglmm model
    - Output:
      - `Model_pdf_MCMC_autocorrelation.pdf`: Plots showing the autocorrelation per iteration
 
-4. **Launches `5-Backsolving.R`:**
+D. **Launches `5-Backsolving.R`:**
    - Uses `MCMCmodel_Sol.csv` to get SNP effects
    - Outputs:
      - `BreedingValues.csv`: Table storing breeding value distribution a posteriori for each line for each trait
