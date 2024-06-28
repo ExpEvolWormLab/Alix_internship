@@ -62,3 +62,9 @@ bash launch_GBLUP_pop.Univariate.sh file.tsv
    - Outputs:
      - `BreedingValues.csv`: Table storing breeding value distribution a posteriori for each line for each trait
      - `SNPs_effects.csv`: Table storing SNP effects a posteriori distribution for each line for each trait
+    
+**`5-Backsolving_Pruned_Data.R`:**
+   -  Uses `MCMCmodel_Sol.csv` and M matrix from pruned data to get SNP effects
+   -  Outputs:
+     - `BreedingValues.csv`: Table storing breeding value distribution a posteriori for each line for each trait
+     - `SNPs_effects.csv`: Table storing SNP effects a posteriori distribution for each line for each trait
