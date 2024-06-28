@@ -1,13 +1,15 @@
+## Script to get the position of SNPs present in a set of vcf file with similar names
+
 setwd("~/Documents/Worms/Plot_GATK/Pop")
 
-
+motif <- '(.*)_final.vcf.gz'
 # Charger les fichiers vcf
-files <- list.files(pattern = ".*_final.vcf.gz")
+files <- list.files(pattern = motif )
 
 library(vcfR)
 
 dfs <- lapply(files, read.vcfR)
-files_name <- sub('(.*)_final.vcf.gz',"\\1",files)
+files_name <- sub(motif ,"\\1",files)
 
 
 
