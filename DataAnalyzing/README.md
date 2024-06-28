@@ -1,7 +1,7 @@
 ## Set of script to analyze sequencing and mapping step
 
 ### First, run the command : 
-      **bash script_summary_reads_table.sh path**
+      bash script_summary_reads_table.sh path
   path - Path to a folder which contains a fastp_reports and a filtered_bam repositories
         !! In fastp_reports : files have to be name as Line.*json
         !! in filtered_bam : files have to be name as Line_*bam
