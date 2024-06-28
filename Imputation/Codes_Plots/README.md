@@ -25,7 +25,13 @@ Local script to plot the number of missing positions inferred after imputation.
 **Output:** 
 - `Impact_Imputation.pdf`: Number of missing positions inferred.
 
-## `Plot_Nbr_SNP_aImputation.R`
+## 1. `Get_SNP_position.R`
+**Inputs :**
+- vcf files (need to be hard filter)
+**Outputs :**
+- position for each vcf files
+
+## 2. `Plot_Nbr_SNP_aImputation.R`
 Local script to plot the number of SNPs after imputation and shared SNPs between populations.
 
 **Input:** 
