@@ -3,8 +3,9 @@
 # Get command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
 M_file <- args[1]  # Path to the M file
-condition <- args[2]  # Condition to filter phenotype data
-output <- args[3]  # Output directory
+pheno_file <- args[2]
+condition <- args[3]  # Condition to filter phenotype data
+output <- args[4]  # Output directory
 
 # Load necessary packages
 options(rgl.useNULL=TRUE)
@@ -23,7 +24,7 @@ M[, 1] <- NULL  # Remove the first column
 M <- as.matrix(M)  # Convert to matrix
 
 # Load phenotype data
-pheno <- read.csv('Final_Transition_rates_estimates_may2024_export.csv')
+pheno <- read.csv(pheno_file)
 pheno_subset <- pheno[, c('pop_label', 'temperature', 'rel_humidity', "session_id",
                           'logD', 'date_str', 'env_label', "SF", "SB", "FS", "FB", "BS", "BF")]
 
