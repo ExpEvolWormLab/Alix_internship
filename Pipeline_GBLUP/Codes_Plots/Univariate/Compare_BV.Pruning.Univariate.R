@@ -6,8 +6,8 @@ setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/Pruned")
 
 ## File and Variable Initialization
 # Define the pattern for the file search
-name <- 'VanRaden_A6_(0.[0-9]*)_NGM'
-name1 <- 'VanRaden_A6_NGM'
+name <- 'VanRaden_A6_(0.[0-9]*)_NGM' #pruned
+name1 <- 'VanRaden_A6_NGM' #not pruned
 # Define the genotype and phenotype file names
 M_file <- 'A6_t_convert_genotype.csv'
 pheno_file <- 'Final_Transition_rates_estimates_may2024_export.csv'
