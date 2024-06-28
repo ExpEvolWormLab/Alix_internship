@@ -1,28 +1,21 @@
 ### Script to compare credible SNP between conditions
 ## Output : Manhattan Plot - effet median a postefiori of SNP along chromosome colored by association in the two environments
 
-
-output <- 'VanRaden_A6'
-
-
-library(ggplot2)
-library(matrixStats)
-library(tidyr)
-library(gridExtra)
-library(grid)
-
-
 setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Pruned")
-#setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Results")
+output <- 'VanRaden_A6'
+pruning <- '0.99'
 # Charger les fichiers CSV
-files <- list.files(pattern = gsub('XXX',output,"Summary_[A-Z]*_XXX_NGM_0.99.csv"))
-file_outputs_MT <- sub("Summary_(.*)_VanRaden_A6_NGM_0.99.csv", "\\1", files)
+motif_NGM <- gsub('PPP',pruning,gsub('XXX',output,"Summary_[A-Z]*_XXX_NGM_PPP.csv"))
+motif1_NGM <- gsub('PPP',pruning,gsub('XXX',output,"Summary_(.*)_XXX_NGM_PPP.csv"))
+files <- list.files(pattern = motif_NGM)
+file_outputs_MT <- sub(motif1_NGM, "\\1", files)
 dfs_NGM <- lapply(files, read.csv)
 
 
-
-files <- list.files(pattern = gsub('XXX',output,"Summary_[A-Z]*_XXX_NaCl_0.99.csv"))
-file_outputs_ST <- sub("Summary_(.*)_VanRaden_A6_NaCl_0.99.csv", "\\1", files)
+motif_NaCl <- gsub('PPP',pruning,gsub('XXX',output,"Summary_[A-Z]*_XXX_NaCl_PPP.csv"))
+motif1_NaCl <- gsub('PPP',pruning,gsub('XXX',output,"Summary_(.*)_XXX_NaCl_PPP.csv"))
+files <- list.files(pattern = motif_NaCl)
+file_outputs_ST <- sub(motif1_NaCl, "\\1", files)
 dfs_NaCl <- lapply(files, read.csv)
 
 
