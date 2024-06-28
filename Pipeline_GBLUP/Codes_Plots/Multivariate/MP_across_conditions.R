@@ -63,7 +63,7 @@ for (i in 1:length(combined_dfs)) {
     theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
     facet_wrap(~ CHROM, ncol = 2, scales = "free_x")
   
-  ggsave(paste0('Manhattan_plots_', output, '-',trait,'.pdf'))
+  ggsave(paste0('Manhattan_plots_', output, '_',pruning,'_',trait,'.pdf'))
   plots_mp[[i]] <- manhattan_plot
   
 }
@@ -83,7 +83,7 @@ legend_mp <- get_legend(plots_mp[[1]])
 plots_mp <- lapply(plots_mp, function(plot) plot + theme(legend.position = "none"))
 
 # Arrange plots with the legend
-pdf(paste0('Manhattan_plots_', output, '.pdf'), width = 14, height = 10)
+pdf(paste0('Manhattan_plots_', output, '_',pruning,'.pdf'), width = 14, height = 10)
 grid.arrange(grobs = plots_mp, ncol = 2, top = textGrob("Manhattan Plots", gp = gpar(fontsize = 20, fontface = "bold")))
 dev.off()
 
