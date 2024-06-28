@@ -1,22 +1,51 @@
-## Set of script to get heterozygotity along chromosomes and to plot it
+# Set of Scripts to Get Heterozygosity Along Chromosomes and to Plot It
 
-### 1-Get_hetero.R :  
-  Rscript 1-Get_hetero.R het_flag.vcf  
-Parameters: het_flag.vcf - vcf file when heterozygotes loci where flag as is_het (combined.annotated.filtred.vcf.gz)  
-            !! Some parameters as chromosomes to plot, population to plot or number of SNPs in a bin can be changed directly on the script  
-**Output** : Heterozygosity*csv - Mean of lines' mean heterozygotity for the windows of SNPs definite by the user along chromosomes  
+This document provides an overview of how to get and plot heterozygosity along chromosomes using the provided scripts and tools. The steps include running the initial heterozygosity extraction script, followed by plotting the results locally using the provided R scripts to generate informative plots.
 
-  
-### 2-Plotting_hetero.R :  
-  To run in local  
-Hyper divergent file is necessary   
-**Outputs** : Heterozygotity_HDregion - pdf heterozygotity along chromosomes with hyper divergent regions plotted as black dots  
-          Heterozygotity_HDregion_Zoom_V - pdf heterozygotity for the remarkable regions of chromosome V with hyper divergent regions plotted as black dots  
-          Randomisation - pdf comparison of observed proportion of heterozygotes associated with HDR for all choromosomes compared to the distribution obtained by chance   
-          Randomisation_Chrom5 - pdf comparison of observed proportion of heterozygotes associated with HDR for the remarkable regions of chromosome V compared to the distribution obtained by chance   
-  
-### Plotting_Chrom5 :  
-  To run in local  
-Hyper divergent file is necessary  
-All pop should be in the working directory name as Heterozygosity_pop.csv   
-**Output** : Chromosome_5_Allpop.pdf - pdf heterozygotity hromosomes with hyper divergent regions plotted as black dots for all pop for the remarkable region of chromosome V  
+## 1. Get Heterozygosity Data
+
+### Script: `1-Get_hetero.R`
+
+#### Command to Run:
+```bash
+Rscript 1-Get_hetero.R het_flag.vcf
+```
+
+#### Parameters:
+- `het_flag.vcf`: VCF file where heterozygote loci are flagged as `is_het` (e.g., `combined.annotated.filtered.vcf.gz`).
+  - **Note**: Some parameters such as chromosomes to plot, populations to plot, or number of SNPs in a bin can be changed directly in the script.
+
+#### Output:
+- `Heterozygosity*.csv`: Contains the mean heterozygosity of lines for the SNP windows defined by the user along chromosomes.
+
+## 2. Plot Heterozygosity Data
+
+### Script: `2-Plotting_hetero.R`
+
+#### Command to Run:
+- This script should be run locally.
+
+#### Requirements:
+- Hyper divergent file is necessary.
+
+#### Outputs:
+- `Heterozygosity_HDregion.pdf`: Heterozygosity along chromosomes with hyper divergent regions plotted as black dots.
+- `Heterozygosity_HDregion_Zoom_V.pdf`: Heterozygosity for the remarkable regions of chromosome V with hyper divergent regions plotted as black dots.
+- `Randomisation.pdf`: Comparison of the observed proportion of heterozygotes associated with hyper divergent regions (HDR) for all chromosomes compared to the distribution obtained by chance.
+- `Randomisation_Chrom5.pdf`: Comparison of the observed proportion of heterozygotes associated with HDR for the remarkable regions of chromosome V compared to the distribution obtained by chance.
+
+## 3. Plot Heterozygosity for Chromosome 5
+
+### Script: `Plotting_Chrom5.R`
+
+#### Command to Run:
+- This script should be run locally.
+
+#### Requirements:
+- Hyper divergent file is necessary.
+- All population data should be in the working directory named as `Heterozygosity_pop.csv`.
+
+#### Output:
+- `Chromosome_5_Allpop.pdf`: Heterozygosity along chromosome V with hyper divergent regions plotted as black dots for all populations in the remarkable region of chromosome V.
+
+
