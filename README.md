@@ -22,4 +22,6 @@ GWAS by GBLUP ~ 24h for multivariate analysis
 
 **DataAnalysing** : All script to analyse bam file quality, and number of lines belonging to each population
 
-**Plots** : All script to compute plots
+All folder has a README file
+Some of them has an ARCHIVES file, which indicates where input/output files are stored on lab computers
+pdf results and other minor outputs can be found on `GEVPC10` on `/mnt/data2/desmarais/` in `Àrchive.zip` 
