@@ -1,0 +1,40 @@
+Scripts to perform imputation per population, filter it and pruned it  
+  
+!! Don't forget to modify path_gatk  
+!! "SNP_2exclude.txt" has to be in the same directory  
+  
+Packages : 	Beagle5  
+		bcftools   
+		GATK v4.5.0  
+		plink   
+		vcftools  
+		bgzip  
+
+Just run  
+bash launch_imputation_pruning.sh final.vcf.gz output_directory  
+launch_imputation_pruning.sh : 	imputation step (bcftools : (query, view), beagle.22Jul22.46e.jar)  
+				filtration step (bcftools : (view, filter), GATK : (VariantFiltration, SelectVariants), vcftools)  
+				pruning step (plink)  
+
+    
+**Parameters** :   
+	final.vcf.gz - final vcf with Lines filtered for high heterozygotity and isotype groups  
+	output_directory - directory where output files will be store (hasn't to alread exist)  
+ 
+**Ouputs** :   
+	output_directory/.sample.name - name of all lines belonging to the pop  
+	output_directory/_final.vcf.gz - vcf files which contains only data for specific pop  
+	output_directory/imputed_${chrom}_${pop}.vcf.gz - vcf files imputed for each chrom for each pop  
+	output_directory/imputed_All_*.vcf.gz - vcf files imputed for all chrom for each pop  
+	output_directory/pop/Filtred/imputed.SNP.vcf.gz - vcf with only SNPs  
+	output_directory/pop/Filtred/imputed.SNP.het.vcf.gz - Soft filter vcf for heterozygotity  
+	output_directory/pop/Filtred/imputed.SNP.het1.vcf.gz - Soft filter vcf for high heterozygotity  
+	output_directory/pop/Filtred/imputed.SNP.without_hetero.vcf.gz - vcf with heterozygote loci set as missing values  
+	output_directory/pop/Filtred/imputed.SNP.filtred.vcf.gz - Soft filter vcf for high missing  
+	output_directory/pop/Filtred/imputed.SNP.hard_filtred.vcf.gz - Hard filter vcf , remove sites : nonPass, multiallelic, monomorphic  
+	output_directory/pop/Filtred/imputed.SNP.filtred.final.vcf.gz - Hard filter vcf , remove MAF < 0.05  
+	output_directory/pop/Pruned/prune.in - files with name of SNPs not in linkage disequilibrium  
+	output_directory/pop/Pruned/prune.out - files with name of SNPs in linkage disequilibrium  
+	output_directory/pop/Pruned/.vcf.gz - vcf files with only SNPs not in linkage disequilibrium  
+	
+
