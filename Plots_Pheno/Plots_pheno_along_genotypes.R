@@ -160,6 +160,6 @@ for(i in vect_P_traits){
 }
 
 # Arrange the plots in a grid layout and save as PDF
-pdf(gsub('XXX', output, "Pheno_Trait_VS_traits_plot_XXX.pdf"), width = 9)
+pdf(gsub('XXX', output, "Pheno_Geno_Trait_VS_traits_plot_XXX.pdf"), width = 9)
 grid.arrange(grobs = plots, ncol = 5)
 dev.off()
