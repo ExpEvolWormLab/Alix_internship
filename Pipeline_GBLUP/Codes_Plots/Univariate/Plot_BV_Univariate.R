@@ -42,15 +42,12 @@ hist_breeding_values <- data.frame(Line=character(0),
                                    Trait=character(0),
                                    Median=numeric(0),
                                    SD=numeric(0))
-# Initialize a list to store the distribution of breeding values
-distrib <- list()
+
 
 # Function to check if zero is within the interval
 is_zero_in_interval <- function(lower, upper) {
   return(lower <= 0 & upper >= 0)
 }
-
-i <- 1
 
 # Loop through each trait
 motif <- paste0(output,"_TTT_MCMCmodel_Sol.csv")
@@ -69,14 +66,7 @@ for(p in vect_P_traits) {
       # Transform to a two-column dataframe
       sub_melt <- melt(subset)
       colnames(sub_melt) <- c('traits', 'breeding_value') # Rename columns
-      # Plot posterior distribution for each trait for specific line
-      g <- ggplot(sub_melt, aes(x = breeding_value, color = traits)) +
-        geom_density() +
-        ggtitle(paste0('Distribution of breeding value for each trait for ', name)) + 
-        theme_bw()
-      # Save the plot with the name of the line
-      distrib[[i]] <- list(line = name, plot = g)
-      i <- i + 1
+      
       
       # Calculate credible interval
       HDI <- hdi(subset) # 95%
