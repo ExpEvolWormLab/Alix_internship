@@ -2,6 +2,7 @@
 ## Output : 
 #    Shared_credible_SNPs*tsv : file with two columns Comparison Nbr_SNPs, compare each traits and store the number of credible SNPs they share 
 #    Shared_credible_SNPs*pdf : plot the previous files
+#    SNP_Count : file which store for SNPs the number of group it's associated to 
 #    Repartition_SNPs_along_K : for each SNPs plot it along chromosome in function of the number of groups they are associated with
 
 ### Script which compare the credible SNP for each trait
