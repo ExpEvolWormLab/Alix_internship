@@ -3,6 +3,9 @@
 
 # Set working directory
 setwd("~/Documents/Worms/Plot_GATK")
+lines_kept_file <- 'Final_lines.csv'
+pheno_file <- 'Final_Transition_rates_estimates_may2024_export.csv'
+output <- '944_population_distribution'
 
 # Initialize an empty data frame
 Df <- data.frame(Population = character(),
@@ -12,7 +15,7 @@ Df <- data.frame(Population = character(),
                  stringsAsFactors = FALSE)
 
 # Read the table containing the line information
-table <- read.csv('Final_lines.csv', header = FALSE)
+table <- read.csv(lines_kept_file, header = FALSE)
 colnames(table) <- c('Line')
 
 # Function to extract population, generation number, and line number from the line name
@@ -74,10 +77,10 @@ Df <- extract_line(table, Df, "")
 Df$Batch <- NULL
 
 # Write the population distribution to a CSV file
-write.csv(table(Df$Population), '944_population_distribution.csv', row.names = FALSE, quote = FALSE)
+write.csv(table(Df$Population), paste0(output,".csv"), row.names = FALSE, quote = FALSE)
 
 # Read the phenotype data
-pheno <- read.csv('Final_Transition_rates_estimates_may2024_export.csv')
+pheno <- read.csv(pheno_file)
 
 # Filter the table to include only lines present in the phenotype data
 table <- data.frame(Line = table[table$Line %in% pheno$pop_label, ])
@@ -94,4 +97,4 @@ Df_pheno <- extract_line(table, Df_pheno, "")
 Df_pheno$Batch <- NULL
 
 # Write the population distribution for phenotyped lines to a CSV file
-write.csv(table(Df_pheno$Population), '944_population_distribution_phenotyped.csv', row.names = FALSE, quote = FALSE)
+write.csv(table(Df_pheno$Population), paste0(output,"_phenotyped.csv"), row.names = FALSE, quote = FALSE)
