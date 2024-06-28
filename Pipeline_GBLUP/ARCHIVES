@@ -1,0 +1,6 @@
+All files for Univariate Analysis can be found on GEVPC10 `/mnt/data2/desmarais/Uni_Pipeline_GBLUP`
+All files for Multivariate Analysis can be found on GEVPC10 `/mnt/data3/desmarais/Pipeline_GBLUP` & `/mnt/data1/desmarais/Pipeline_GBLUP`
+
+Pipeline GBLUP was tried on pruned data on A6 population to verify that results using just pruned data at the backsolving step and results using pruned data all the time are consistent : results can be found on GEVPC10 `/mnt/data1/desmarais/Pruned_Pipeline_GBLUP`
+
+
