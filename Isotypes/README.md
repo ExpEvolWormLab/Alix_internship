@@ -56,6 +56,10 @@ This document provides an overview of the scripts used to obtain isotype groups.
 - `correspondance_isotypes.csv`: Lines belonging to an isotype group and the line representing it.
 - `Removed_line_isotypes.csv`: Stores names of lines removed because they belong to an isotype group.
 
+
+## Pipeline
+![Results_GWAS_Worms](https://github.com/ExpEvolWormLab/Alix_internship/assets/83120878/552e0b51-3e97-4cc9-8eca-cddc3b6eb451)
+
 ## Convert Phenotype Table
 
 ### Script: `Convert_phenotype_table.R`
