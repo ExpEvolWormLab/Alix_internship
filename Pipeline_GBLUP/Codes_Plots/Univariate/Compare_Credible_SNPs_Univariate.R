@@ -6,7 +6,8 @@
 
 ### Script which compare the credible SNP for each trait for single trait
 output <- 'Uni_VanRaden_A6_NGM_0.99'
-setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/Pruned")
+setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/Pruned") # where summaries are stored
+output_dir <- "~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/A6"
 
 # Load necessary libraries
 library(tidyr)
@@ -18,7 +19,7 @@ motif1 <- paste0("Summary_(.*)_", output, ".csv")
 files <- list.files(pattern = motif)
 file_names <- sub(motif1, "\\1", files)
 dfs <- lapply(files, read.csv)
-setwd("~/Documents/Worms/GBLUP/Univariate_Pipeline_GBLUP/Results/A6")
+setwd(output_dir)
 
 # Filter for rows marked as "Credible"
 credibles <- lapply(dfs, function(df) df[df$credible == "Credible",]$X)
