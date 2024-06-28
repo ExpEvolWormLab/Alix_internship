@@ -46,3 +46,7 @@ This script performs:
 - `output_directory/pop/Pruned/prune.in`: SNPs not in linkage disequilibrium.
 - `output_directory/pop/Pruned/prune.out`: SNPs in linkage disequilibrium.
 - `output_directory/pop/Pruned/*.vcf.gz`: VCF files with only SNPs not in linkage disequilibrium.
+
+### `Summarize_imputation.sh`
+Need to be launch in the same directory than `launch_imputation_pruning.sh`
+Compute a summary table containing number of SNPs at each step for each population
