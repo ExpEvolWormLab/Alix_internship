@@ -1,3 +1,7 @@
+# Carefull results I've computed don't have the right name of traits, some of them need to be inverse
+Can be done on output of Pipeline_GBLUP by modifing the column names or before doing GWAS by GBLUP by modifiying the file phenotypes
+GWAS by GBLUP ~ 24h for multivariate analysis
+
 # Pipeline
 ![Results_GWAS_Worms](https://github.com/ExpEvolWormLab/Alix_internship/assets/83120878/0cf5be21-7a76-4b14-8773-1b82055ff5f1)
 
