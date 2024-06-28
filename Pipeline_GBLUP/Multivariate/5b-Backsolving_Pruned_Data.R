@@ -1,15 +1,17 @@
 ## Script to backsolve with pruned matrix Multi trait##
 output <- 'VanRaden_A6_NaCl_0.99'
+output_dir <- "~/Documents/Worms/GBLUP/Pipeline_GBLUP/Results" 
 file <- 'VanRaden_A6_NaCl_MCMCmodel_Sol.csv'
 file1 <- 'pruned.0.99.vcf.gz'
+# Set working directory
+setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Pruned")
 
-vect_P_traits <- c("SF", "SB", "FS", "FB", "BS", "BF")
+
 
 library(data.table)
 library(vcfR)
 
-# Set working directory
-setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Pruned")
+vect_P_traits <- c("SF", "SB", "FS", "FB", "BS", "BF")
 
 # Read vcf file
 vcf <- read.vcfR(file1)
@@ -58,7 +60,7 @@ rownames(M) <- gsub('CeMee', '', rownames(M))
 rownames(M) <- gsub('_sorted', '', rownames(M))
 
 # Set working directory to where the MCMC model solution is stored
-setwd("~/Documents/Worms/GBLUP/Pipeline_GBLUP/Results")
+setwd(output_dir)
 
 # Read the MCMC model solution
 model_MCMC_WI_Sol <- read.csv(file)
