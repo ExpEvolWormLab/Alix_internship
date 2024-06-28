@@ -38,3 +38,10 @@ Compare different G_matrix.csv files. Just need to change name to seek files cor
 
 ### Output:
 - Plot of correlation between G_matrix.
+
+
+---
+
+## Compare_G_matrix_Prune_Heatmap.R
+### Local Script
+Compare G-matrix of pruned results and non pruned result and plot their correlation in a heatmap
