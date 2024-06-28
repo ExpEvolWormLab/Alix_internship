@@ -1,5 +1,5 @@
 # Carefull results I've computed don't have the right name of traits, some of them need to be inverse
-Can be done on output of Pipeline_GBLUP by modifing the column names or before doing GWAS by GBLUP by modifiying the file phenotypes
+Can be done on output of Pipeline_GBLUP by modifing the column names or before doing GWAS by GBLUP by modifiying the file phenotypes  
 GWAS by GBLUP ~ 24h for multivariate analysis
 
 # Pipeline
