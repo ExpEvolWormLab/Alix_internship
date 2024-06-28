@@ -1,4 +1,4 @@
-### Script to plot phenotype data and compare traits using GBLUP
+### Script to plot phenotype data against each other (both condition (NGM/NaCl) are considered at the same time)
 
 # Set the working directory
 setwd("~/Documents/Worms/GBLUP")
