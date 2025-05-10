@@ -25,10 +25,10 @@ do
         #Get the name of the line
         line=${file%%.*}
         line=${line##*/}
-	if grep -q ${line} $(ls $2/BQSR_files/*);
-	then
-		continue
-	fi
+	#if grep -q ${line} $(ls $2/BQSR_files/*);
+	#then
+	#	continue
+	#fi
 	echo -e "LINE : $line\n\n"
  
         #Flag the duplicates
