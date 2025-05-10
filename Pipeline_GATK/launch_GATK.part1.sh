@@ -60,7 +60,7 @@ mv list.name1 list.name
 while IFS= read -r i; do
     # Vérifier si les fichiers existent pour chaque modèle de nommage
     if [ -e "$i.I.g.vcf.gz" ] && [ -e "$i.II.g.vcf.gz" ] && [ -e "$i.III.g.vcf.gz" ] && [ -e "$i.IV.g.vcf.gz" ] && [ -e "$i.V.g.vcf.gz" ] && [ -e "$i.X.g.vcf.gz" ] && [ -e "$i.MtDNA.g.vcf.gz" ]; then
-        bcftools concat "$i.I.g.vcf.gz" "$i.II.g.vcf.gz" "$i.III.g.vcf.gz" "$i.IV.g.vcf.gz" "$i.V.g.vcf.gz" "$i.X.g.vcf.gz" "$i.MtDNA.g.vcf.gz "-O z -o $i.g.vcf.gz
+        bcftools concat "$i.I.g.vcf.gz" "$i.II.g.vcf.gz" "$i.III.g.vcf.gz" "$i.IV.g.vcf.gz" "$i.V.g.vcf.gz" "$i.X.g.vcf.gz" "$i.MtDNA.g.vcf.gz" -O z -o $i.g.vcf.gz
 	echo $i > sample.txt
 	bcftools reheader -s sample.txt -O z -o $i.reheader.g.vcf.gz  $i.g.vcf.gz #Nem the sample with line ID
         $gatk IndexFeatureFile -I $i.reheader.g.vcf.gz
