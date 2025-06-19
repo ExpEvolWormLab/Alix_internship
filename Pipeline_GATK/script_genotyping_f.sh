@@ -6,7 +6,7 @@
 
 path_gatk=$3
 path_ref=$4
-chrom=$5
+#chrom=$5
 
 
 set -e #Stop if error
@@ -20,15 +20,15 @@ $path_gatk  CombineGVCFs\
        -R ${path_ref} \
         --variant $1 \
         -G StandardAnnotation -G AS_StandardAnnotation -G StandardHCAnnotation \
-        -O $2/All_combined.${chrom}.g.vcf.gz \
+        -O $2/All_combined.g.vcf.gz \
 	 --tmp-dir $2/tmp
 
 #Perform joint genotyping on samples 
 
 $path_gatk --java-options "-Xmx10g" GenotypeGVCFs \
    -R ${path_ref} \
-   -V $2/All_combined.${chrom}.g.vcf.gz \
-   -O $2/All_combined.final.${chrom}.vcf.gz \
+   -V $2/All_combined.g.vcf.gz \
+   -O $2/All_combined.final.vcf.gz \
 	 --tmp-dir $2/tmp
 
 # Store end time
