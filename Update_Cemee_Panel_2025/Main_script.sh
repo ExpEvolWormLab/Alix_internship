@@ -14,7 +14,7 @@ path_gatk='/mnt/data2/desmarais/gatk-4.5.0.0/gatk'
 path_alix_pipeline='/mnt/data2/mallard/2025_Cemee_panel_update/Alix_internship/Pipeline_GATK/'
 
 # location of the bam files to add
-path_input_bam="/mnt/data2/mallard/2025_Cemee_panel_update/bam_sorted"
+path_input_bam="/mnt/data2/mallard/2025_Cemee_panel_update/bam_sorted2"
 output_directory="/mnt/data2/mallard/2025_Cemee_panel_update/"
 
 #path_known_sites='/mnt/data3/desmarais/Data/none.bed'
@@ -67,6 +67,7 @@ for pid in "${bg_pids[@]}"; do
 done
 
 # Get the name of all sample
+rm list.name
 for i in $output_directory/GATK/HC_files/*.g.vcf.gz
 	do echo ${i%%.*} >> list.name 
 done
@@ -76,32 +77,30 @@ cat list.name | uniq > list.name1
 rm list.name
 mv list.name1 list.name 
 
+mkdir reheader_files
+
 # Rename each .gz with line as sample name
 # Parcourir chaque ligne du fichier list.name
 while IFS= read -r i; do
     # Vérifier si les fichiers existent pour chaque modèle de nommage
     if [ -e "$i.I.g.vcf.gz" ] && [ -e "$i.II.g.vcf.gz" ] && [ -e "$i.III.g.vcf.gz" ] && [ -e "$i.IV.g.vcf.gz" ] && [ -e "$i.V.g.vcf.gz" ] && [ -e "$i.X.g.vcf.gz" ] && [ -e "$i.MtDNA.g.vcf.gz" ]; then
         bcftools concat "$i.I.g.vcf.gz" "$i.II.g.vcf.gz" "$i.III.g.vcf.gz" "$i.IV.g.vcf.gz" "$i.V.g.vcf.gz" "$i.X.g.vcf.gz" "$i.MtDNA.g.vcf.gz" -O z -o $i.g.vcf.gz
-	echo $i > sample.txt
-	bcftools reheader -s sample.txt -O z -o $i.reheader.g.vcf.gz  $i.g.vcf.gz #Nem the sample with line ID
-        $path_gatk IndexFeatureFile -I $i.reheader.g.vcf.gz
+	j=`basename $i`
+    echo $j > sample.txt
+	bcftools reheader -s sample.txt -o reheader_files/${j}.reheader.g.vcf.gz  $i.g.vcf.gz #Name the sample with line ID
+    $path_gatk IndexFeatureFile -I reheader_files/${j}.reheader.g.vcf.gz
     else echo "PB with HC for $i"
     fi
 done < list.name
 
-
 #### END of the Launch_part1 from Alix
 
-### Move the file to a new directory
-
-mkdir reheader_files
-mv GATK/HC_files/*reheader.g.vcf.gz* reheader_files/
 
 ##### START of the launch_part2  #####
 
 ### Create the .list file with all GVCF files
 
-find -name GATK/HC_files/*reheader.g.vcf.gz > .list | sed "s/\.\//$pwd/g"
+#find -name GATK/HC_files/*reheader.g.vcf.gz > .list | sed "s/\.\//$pwd/g"
 
 #### GENOTYPING ####
 # first feature : path of the file where .list is stored
@@ -114,7 +113,7 @@ output_directory_genotyping="${output_directory}/genotyped_files"
 
 ### WARNING - Here add the path to the old GVCF file you want to update
 ls reheader_files/*reheader.g.vcf.gz > $list_file
-echo "/mnt/usb_FM/mallard/GVCFs/GVCF_Founders_AllLines.g.vcf.gz" >> $list_file
+echo "/mnt/usb_FM/mallard/GVCF_filtered/GVCF_AllLines_nodoublons_noFounders.g.vcf.gz" >> $list_file
 ## Index the large GVCF if not done before
 $path_gatk IndexFeatureFile -I "/mnt/usb_FM/mallard/GVCFs/GVCF_Founders_AllLines.g.vcf.gz"
 
@@ -181,7 +180,6 @@ bcftools view -H -f.,DP_min_depth,QUAL_quality,FS_fisherstrand,QD_quality_by_dep
  cut -f1,2  >> $output_directory/Filtered//SNP_2exclude.tsv
 echo "non PASS SNP : "$(bcftools view -H -f.,DP_min_depth,QUAL_quality,FS_fisherstrand,QD_quality_by_depth,SOR_strand_odds_ratio,high_missing,high_heterozygosity $output_directory/Filtered/combined.final.vcf.gz | wc -l) >> $output_directory/Filtered/summary.txt
 
-
 # Write singleton 
 vcftools --gzvcf $output_directory/Filtered/combined.final.vcf.gz --singletons --out $output_directory/Filtered/to_remove
 
@@ -189,8 +187,8 @@ sed '1d' $output_directory/Filtered/to_remove.singletons | awk '{print $1":"$2}'
 sed '1d' $output_directory/Filtered/to_remove.singletons | cut -f1,2 >> $output_directory/Filtered/SNP_2exclude.tsv
 echo "doubletons : "$(sed '1d' $output_directory/Filtered/to_remove.singletons | wc -l) >> $output_directory/Filtered/summary.txt
 
-####################################### Hard filtering ### Not necessary here - can be performed later, when unnecessary samples are removed/re-labeled #######################################
-#bcftools view -T ^$output_directory/Filtered/SNP_2exclude.tsv $output_directory/Filtered/combined.final.vcf.gz -O z > $output_directory/Filtered/combined.final.hard_filter.vcf.gz
+####################################### Hard filtering to finish
+bcftools view -T ^$output_directory/Filtered/SNP_2exclude.tsv $output_directory/Filtered/combined.final.vcf.gz -O z > $output_directory/Filtered/combined.final.hard_filter.vcf.gz
 #########################################################################################################################################################################
 ######### Notes from Dehan LEE NEE paper  ###########################
 #Finally, we removed sites that had >5% missing genotype data or where >10% of samples were called heterozygous.
